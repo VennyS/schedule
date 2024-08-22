@@ -1,55 +1,59 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class ApiService {
-  static final ApiService _instance = ApiService._internal();
+// TODO: Вынести все в общий ApiService
+class Api {
+  static final Api _instance = Api._internal();
   late String baseUrl;
 
-  factory ApiService() {
+  factory Api() {
     return _instance;
   }
 
-  ApiService._internal();
+  Api._internal();
 
   Future<void> setBaseUrl(String url) async {
     baseUrl = url;
   }
 
-  Future<Map<String, dynamic>> _postRequest(String url) async {
-    final response = await http.post(Uri.parse(url));
+  Future<Map<String, dynamic>> _postRequest(
+      String url, Map<String, dynamic> data) async {
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type':
+            'application/json', // Указываем, что данные будут в формате JSON
+      },
+      body: json.encode(data), // Преобразуем карту данных в JSON-строку
+    );
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return json.decode(response.body) as Map<String, dynamic>;
-    } else {
-      throw Exception('Failed to post data');
-    }
+    // Возвращаем и тело ответа, и код статуса
+    return {
+      'statusCode': response.statusCode,
+      'body': response.statusCode == 200 || response.statusCode == 201
+          ? json.decode(response.body)
+          : null
+    };
   }
 
-  Future<String> processPhone(String phone) async {
-    final url = '$baseUrl/auth/auth_phone/?phone=$phone';
-    final responseBody = await _postRequest(url);
+  Future<String> singUpOrCancelRecord(String name, String phone, int gtoID,
+      String status, String? userID) async {
+    final url = '$baseUrl/test/user_records/';
 
-    // Проверка наличия ключей и возврат соответствующего значения
-    if (responseBody.containsKey('message')) {
-      return responseBody['message'] as String;
-    } else if (responseBody.containsKey('detail')) {
-      return responseBody['detail'] as String;
-    } else {
-      return 'Unknown response format';
-    }
-  }
+    print("gtoID: $gtoID");
 
-  Future<String> proccesCode(String phone, String code) async {
-    final url = '$baseUrl/auth/code/?phone=$phone&&code=$code';
-    final responseBody = await _postRequest(url);
+    // Данные, которые отправляем в POST-запросе
+    final data = {
+      'name': name,
+      'phone': phone,
+      'gto_id': gtoID.toString(),
+      'status': status,
+      'user_id': userID,
+    };
 
-    if (responseBody.containsKey("message")) {
-      return responseBody[
-          "message"]; // Код недействителен или времы вышло, обновленный код отправлен в телеграм
-    } else if (responseBody.containsKey("role")) {
-      return "Успешно";
-    } else {
-      return "null";
-    }
+    // Отправляем POST-запрос с данными
+    final response = await _postRequest(url, data);
+
+    return response['body'];
   }
 }

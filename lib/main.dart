@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:package_user/package_user.dart';
+import 'package:schedule/api/api_service.dart';
 import 'package:schedule/gto_page.dart';
 
 import 'api/config.dart';
 
+// TODO: Вынести все в общий apiService
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Config.load();
   final apiService = ApiService(Config.baseUrl);
+  Api().setBaseUrl(Config.baseUrl);
   runApp(MyApp(apiService: apiService));
 }
 
