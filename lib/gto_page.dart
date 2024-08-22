@@ -283,6 +283,7 @@ class GtoPageState extends State<GtoPage> {
       null,
     );
 
+    // ignore: unnecessary_null_comparison
     if (result != null) {
       ToastManager().showToast(
         context,
