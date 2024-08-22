@@ -501,7 +501,7 @@ packages:
       path: "S:\\Important\\Self-development\\Programming\\flutter\\widgets"
       relative: false
     source: path
-    version: "0.0.1"
+    version: "0.0.6"
   xdg_directories:
     dependency: transitive
     description:

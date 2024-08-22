@@ -70,6 +70,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/
     - assets/svgs/
     - assets/pngs/avatar.png
 
