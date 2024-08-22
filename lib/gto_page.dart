@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:package_user/package_user.dart';
+import 'package:schedule/api/api_service.dart';
 import 'package:widgets/widgets.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -149,6 +150,7 @@ class GtoPageState extends State<GtoPage> {
                 ),
                 Padding(
                   padding: const EdgeInsetsDirectional.all(16),
+                  // TODO: Здесь должно быть описание item.
                   child: Text(
                     "С другой стороны постоянный количественный рост и сфера нашей активности требуют определения и уточнения дальнейших направлений развития. Значимость этих проблем настолько очевидна, что сложившаяся структура организации играет важную роль в формировании форм развития. Не следует, однако забывать, что начало повседневной работы по формированию позиции требуют от нас анализа дальнейших направлений развития. Разнообразный и богатый опыт новая модель организационной деятельности играет важную роль в формировании системы обучения кадров, соответствует насущным потребностям.",
                     style: GoogleFonts.inter(
@@ -248,39 +250,71 @@ class GtoPageState extends State<GtoPage> {
         tomorrow.day == date.day);
   }
 
-  // TODO: API
   void onSignUpPressed() {
-    setState(() {
-      isSignUpWillBeShown = false;
-    });
+    _handleRecordAction(
+      successMessage: "Вы записались на тренировку",
+      successDescription:
+          "${DateFormat('d MMMM', 'ru').format(widget.item.dateDateTime)} в ${widget.item.timeStart} ждем вас в клубе",
+      status: "Подтвердил",
+      isSignUp: true,
+    );
+  }
 
-    ToastManager().showToast(
+  void onCancelRecordPressed() {
+    _handleRecordAction(
+      successMessage: "Отменил",
+      status: "Подтвердил",
+      isSignUp: false,
+    );
+  }
+
+  // TODO: Правильный номер телефона.
+  void _handleRecordAction({
+    required String successMessage,
+    String? successDescription,
+    required String status,
+    required bool isSignUp,
+  }) async {
+    final result = await Api().singUpOrCancelRecord(
+      "unknown",
+      "79517710068",
+      widget.item.gtoId,
+      status,
+      null,
+    );
+
+    if (result != null) {
+      ToastManager().showToast(
         context,
         ToastWidget(
-          variant: ToastVariant.success,
-          title: "Вы записались на тренировку",
+          variant: isSignUp ? ToastVariant.success : ToastVariant.warning,
+          title: successMessage,
           showTitle: true,
-          description:
-              "${DateFormat('d MMMM', 'ru').format(widget.item.dateDateTime)} в ${widget.item.timeStart} ждем вас в клубе",
-          showDescription: true,
+          description: successDescription,
+          showDescription: successDescription != null,
         ),
         ToastSide.bottom,
         left: 12,
         rigth: 12,
-        bottom: 16);
+        bottom: 16,
+      );
+
+      setState(() {
+        isSignUpWillBeShown = !isSignUp;
+      });
+    } else {
+      showErrorToast();
+    }
   }
 
-  void onCancelRecordPressed() {
-    setState(() {
-      isSignUpWillBeShown = true;
-    });
-
+  void showErrorToast() {
     ToastManager().showToast(
         context,
         const ToastWidget(
-          variant: ToastVariant.warning,
-          title: "Запись отменена",
+          variant: ToastVariant.error,
+          title: "Ошибка!",
           showTitle: true,
+          description: "Что-то пошло не так, попробуйте ещё раз..",
         ),
         ToastSide.bottom,
         left: 12,
