@@ -1,16 +1,4 @@
-# testim
+# Страница с расписанием
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![image](https://github.com/user-attachments/assets/ea734eba-d9a3-425e-912b-4c91772c19d4)``
+![image](https://github.com/user-attachments/assets/79a10007-2dd1-41aa-b28b-10c3b4af8bbd)
