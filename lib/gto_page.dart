@@ -3,13 +3,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:schedule/api_service.dart';
 import 'package:widgets/api/api_service.dart';
 import 'package:widgets/custom_button.dart';
 import 'package:widgets/custom_tag.dart';
 import 'package:widgets/horizontal_card.dart';
 import 'package:widgets/models/list_item.dart';
 import 'package:widgets/toast.dart';
+
+// Для тестов.
+// import 'package:schedule/api_service.dart';
 
 class GtoPage extends StatefulWidget {
   final ListItem item;
