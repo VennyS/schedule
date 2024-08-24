@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:package_user/package_user.dart';
-import 'package:schedule/api/api_service.dart';
-import 'package:widgets/widgets.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:schedule/api_service.dart';
+import 'package:widgets/api/api_service.dart';
+import 'package:widgets/custom_button.dart';
+import 'package:widgets/custom_tag.dart';
+import 'package:widgets/horizontal_card.dart';
+import 'package:widgets/models/list_item.dart';
+import 'package:widgets/toast.dart';
 
 class GtoPage extends StatefulWidget {
   final ListItem item;
@@ -134,8 +138,7 @@ class GtoPageState extends State<GtoPage> {
                   ),
                   showSubtitle: true,
                   trailingControl: Transform.rotate(
-                    angle:
-                        3.14159, // Это значение соответствует 180 градусам в радианах
+                    angle: 3.14159,
                     child: SvgPicture.asset(
                       "assets/svgs/arrow.svg",
                       height: 12,
@@ -253,17 +256,18 @@ class GtoPageState extends State<GtoPage> {
   void onSignUpPressed() {
     _handleRecordAction(
       successMessage: "Вы записались на тренировку",
+      status: "Подтвердил",
       successDescription:
           "${DateFormat('d MMMM', 'ru').format(widget.item.dateDateTime)} в ${widget.item.timeStart} ждем вас в клубе",
-      status: "Подтвердил",
       isSignUp: true,
     );
   }
 
+  // TODO: Когда появиться метод в API для отмены записи, сюда вставить.
   void onCancelRecordPressed() {
     _handleRecordAction(
       successMessage: "Отменил",
-      status: "Подтвердил",
+      status: "Отменил",
       isSignUp: false,
     );
   }
@@ -271,17 +275,12 @@ class GtoPageState extends State<GtoPage> {
   // TODO: Правильный номер телефона.
   void _handleRecordAction({
     required String successMessage,
-    String? successDescription,
     required String status,
+    String? successDescription,
     required bool isSignUp,
   }) async {
-    final result = await Api().singUpOrCancelRecord(
-      "unknown",
-      "79517710068",
-      widget.item.gtoId,
-      status,
-      null,
-    );
+    final result = await ApiService().singUpOrCancelRecord(
+        widget.item.name, "79517710067", widget.item.gtoId, status);
     // ignore: unnecessary_null_comparison
     if (result != null && mounted) {
       ToastManager().showToast(

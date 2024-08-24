@@ -1,34 +1,60 @@
+import 'package:calendar_gymatech/cubit/schedule_cubit.dart';
+import 'package:calendar_gymatech/pages/calendar_page.dart';
 import 'package:flutter/material.dart';
-import 'package:package_user/package_user.dart';
-import 'package:schedule/api/api_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:schedule/gto_page.dart';
+import 'package:widgets/api/api_service.dart';
+import 'package:widgets/api/config.dart';
 
-import 'api/config.dart';
+// Для тестов.
+// import 'package:schedule/api_service.dart';
+// import 'package:widgets/models/list_item.dart';
+// import 'package:widgets/models/spots.dart';
 
-// TODO: Вынести все в общий apiService
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('ru_RU');
   await Config.load();
-  final apiService = ApiService(Config.baseUrl);
-  Api().setBaseUrl(Config.baseUrl);
-  runApp(MyApp(apiService: apiService));
+  ApiService().setBaseUrl(Config.baseUrl);
+
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ScheduleCubit()..loadSchedule(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  final ApiService apiService;
-
-  const MyApp({super.key, required this.apiService});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        body: MyCalendar(
-          apiService: apiService,
-          gtoPageBuilder: (item) => GtoPage(item: item),
-        ),
-      ),
-    );
+        // home: GtoPage(
+        //     item: ListItem(
+        //         gtoId: 7,
+        //         dayOfWeek: "Monday",
+        //         date: "2024-08-19T00:00:00",
+        //         timeStart: "12:00",
+        //         name: "Качалка",
+        //         coachName: "Александр Петров",
+        //         trainerPhotoUrl: "",
+        //         duration: 55,
+        //         status: true,
+        //         spots: Spots(
+        //             maxSpots: 33,
+        //             currentSpots: 0,
+        //             confirmed: 0,
+        //             canceled: 0,
+        //             missed: 0,
+        //             notConfirmed: 0,
+        //             waitingList: 0))));
+        home: CalendarPage(gtoPageBuilder: (item) => GtoPage(item: item)));
   }
 }
