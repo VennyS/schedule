@@ -33,9 +33,9 @@ dependencies:
   # package_user:
   #   path: S:/Important/Self-development/Programming/flutter/package_user
   widgets:
-    path: S:/Important/Self-development/Programming/flutter/widgets
+    path: S:/Important/Self-development/Programming/flutter/gymatech/widgets
   calendar_gymatech:
-    path: S:/Important/Self-development/Programming/flutter/calendar_gymatech
+    path: S:/Important/Self-development/Programming/flutter/gymatech/calendar_gymatech
 
 
   # The following adds the Cupertino Icons font to your application.

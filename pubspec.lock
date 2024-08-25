@@ -44,7 +44,7 @@ packages:
   calendar_gymatech:
     dependency: "direct main"
     description:
-      path: "S:\\Important\\Self-development\\Programming\\flutter\\calendar_gymatech"
+      path: "S:\\Important\\Self-development\\Programming\\flutter\\gymatech\\calendar_gymatech"
       relative: false
     source: path
     version: "1.0.0+1"
@@ -482,10 +482,10 @@ packages:
   widgets:
     dependency: "direct main"
     description:
-      path: "S:\\Important\\Self-development\\Programming\\flutter\\widgets"
+      path: "S:\\Important\\Self-development\\Programming\\flutter\\gymatech\\widgets"
       relative: false
     source: path
-    version: "0.0.6"
+    version: "0.0.9"
   xdg_directories:
     dependency: transitive
     description:

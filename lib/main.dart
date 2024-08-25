@@ -16,7 +16,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('ru_RU');
   await Config.load();
-  ApiService().setBaseUrl(Config.baseUrl);
+  ApiService.setBaseUrl(Config.baseUrl);
 
   runApp(
     MultiBlocProvider(

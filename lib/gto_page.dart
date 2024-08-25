@@ -265,7 +265,7 @@ class GtoPageState extends State<GtoPage> {
     );
   }
 
-  // TODO: Когда появиться метод в API для отмены записи, сюда вставить.
+  // TODO: Когда появится метод в API для отмены записи, сюда вставить.
   void onCancelRecordPressed() {
     _handleRecordAction(
       successMessage: "Отменил",
@@ -281,11 +281,11 @@ class GtoPageState extends State<GtoPage> {
     String? successDescription,
     required bool isSignUp,
   }) async {
-    final result = await ApiService().singUpOrCancelRecord(
+    final result = await ApiService.signUp(
         widget.item.name, "79517710067", widget.item.gtoId, status);
     // ignore: unnecessary_null_comparison
     if (result != null && mounted) {
-      ToastManager().showToast(
+      ToastManager.showToast(
         context,
         ToastWidget(
           variant: isSignUp ? ToastVariant.success : ToastVariant.warning,
@@ -296,7 +296,7 @@ class GtoPageState extends State<GtoPage> {
         ),
         ToastSide.bottom,
         left: 12,
-        rigth: 12,
+        right: 12,
         bottom: 16,
       );
 
@@ -309,7 +309,7 @@ class GtoPageState extends State<GtoPage> {
   }
 
   void showErrorToast() {
-    ToastManager().showToast(
+    ToastManager.showToast(
         context,
         const ToastWidget(
           variant: ToastVariant.error,
@@ -319,7 +319,7 @@ class GtoPageState extends State<GtoPage> {
         ),
         ToastSide.bottom,
         left: 12,
-        rigth: 12,
+        right: 12,
         bottom: 16);
   }
 }
